@@ -1,3 +1,15 @@
+# v0.0.3 (Sat Apr 05 2025)
+
+#### ⚠️ Pushed to `main`
+
+- add dist (lisowski54@gmail.com)
+
+#### Authors: 1
+
+- Andrew Lisowski (lisowski54@gmail.com)
+
+---
+
 # v0.0.2 (Sat Apr 05 2025)
 
 #### ⚠️ Pushed to `main`
