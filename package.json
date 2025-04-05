@@ -25,6 +25,10 @@
   "peerDependencies": {
     "react": ">=17"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "tshy": {
     "exports": {
       ".": "./src/use-shared-resize-observer.tsx",
