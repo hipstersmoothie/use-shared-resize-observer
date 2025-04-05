@@ -1,12 +1,9 @@
 import React, { useRef, useState } from "react";
 import { useSize } from "../use-size.js";
-import {
-  SharedResizeObserverProvider,
-  useSharedResizeObserver,
-} from "../use-shared-resize-observer.js";
+import { useSharedResizeObserver } from "../use-shared-resize-observer.js";
 import { useSizeRef } from "../use-size-ref.js";
 
-const UseSizeStory = () => {
+export const Size = () => {
   const ref = useRef<HTMLDivElement>(null);
   const size = useSize(ref);
 
@@ -26,15 +23,7 @@ const UseSizeStory = () => {
   );
 };
 
-export const Size = () => {
-  return (
-    <SharedResizeObserverProvider>
-      <UseSizeStory />
-    </SharedResizeObserverProvider>
-  );
-};
-
-const UseSizeRefStory = () => {
+export const SizeRef = () => {
   const ref = useRef<HTMLDivElement>(null);
   const size = useSizeRef(ref);
 
@@ -59,15 +48,7 @@ const UseSizeRefStory = () => {
   );
 };
 
-export const SizeRef = () => {
-  return (
-    <SharedResizeObserverProvider>
-      <UseSizeRefStory />
-    </SharedResizeObserverProvider>
-  );
-};
-
-const UseResizeObserverStory = () => {
+export const ResizeObserver = () => {
   const ref = useRef<HTMLDivElement>(null);
   const [variant, setVariant] = useState<"blue" | "red" | "green">("green");
 
@@ -96,13 +77,5 @@ const UseResizeObserverStory = () => {
         backgroundColor: variant,
       }}
     />
-  );
-};
-
-export const ResizeObserver = () => {
-  return (
-    <SharedResizeObserverProvider>
-      <UseResizeObserverStory />
-    </SharedResizeObserverProvider>
   );
 };

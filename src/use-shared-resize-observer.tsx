@@ -1,11 +1,4 @@
-import { createContext } from "@radix-ui/react-context";
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-} from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import type { ObserverEntry, onUpdate } from "./types.js";
 
 interface SharedResizeObserverContext<T extends HTMLElement | null> {
@@ -13,63 +6,53 @@ interface SharedResizeObserverContext<T extends HTMLElement | null> {
   unobserve: (entry: ObserverEntry<T>) => void;
 }
 
-const [ObserverContext, useObserverContext] =
-  createContext<SharedResizeObserverContext<HTMLElement | null> | null>(
-    "SharedResizeObserverContext"
-  );
+const cbMap = new Map<React.RefObject<HTMLElement | null>, onUpdate>();
+let observer: ResizeObserver | undefined;
+let observerContext:
+  | SharedResizeObserverContext<HTMLElement | null>
+  | undefined;
 
-export function SharedResizeObserverProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const observer = useRef<ResizeObserver | null>(null);
-  const cbMap = useRef<Map<React.RefObject<HTMLElement | null>, onUpdate>>(
-    new Map()
-  );
+function createObserverContext() {
+  if (observerContext) {
+    return;
+  }
 
-  useLayoutEffect(() => {
-    observer.current = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const [, cb] =
-          Array.from(cbMap.current.entries()).find(
-            ([ref]) => ref.current === entry.target
-          ) || [];
+  observer = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      const [, cb] =
+        Array.from(cbMap.entries()).find(
+          ([ref]) => ref.current === entry.target
+        ) || [];
 
-        if (cb) {
-          cb(entry);
-        }
+      if (cb) {
+        cb(entry);
       }
-    });
-
-    return () => {
-      observer.current?.disconnect();
-    };
-  }, []);
-
-  const observe = useCallback((entry: ObserverEntry<HTMLElement | null>) => {
-    if (!entry.ref.current) {
-      return;
     }
+  });
 
-    observer.current?.observe(entry.ref.current);
-    cbMap.current.set(entry.ref, entry.onUpdate);
-  }, []);
+  observerContext = {
+    observe: (entry) => {
+      if (!entry.ref.current) {
+        return;
+      }
 
-  const unobserve = useCallback((entry: ObserverEntry<HTMLElement | null>) => {
-    if (!entry.ref.current) {
-      return;
-    }
+      observer?.observe(entry.ref.current);
+      cbMap.set(entry.ref, entry.onUpdate);
+    },
+    unobserve: (entry) => {
+      if (!entry.ref.current) {
+        return;
+      }
 
-    observer.current?.unobserve(entry.ref.current);
-    cbMap.current.delete(entry.ref);
-  }, []);
+      observer?.unobserve(entry.ref.current);
+      cbMap.delete(entry.ref);
 
-  return (
-    <ObserverContext observe={observe} unobserve={unobserve}>
-      {children}
-    </ObserverContext>
-  );
+      if (cbMap.size === 0) {
+        observer?.disconnect();
+        observer = undefined;
+      }
+    },
+  };
 }
 
 export function useSharedResizeObserver<T extends HTMLElement | null>({
@@ -77,7 +60,6 @@ export function useSharedResizeObserver<T extends HTMLElement | null>({
   onUpdate,
   options,
 }: ObserverEntry<T>) {
-  const observer = useObserverContext("useSharedResizeObserver");
   const memoizedOptions = useMemo(
     (): ResizeObserverOptions => ({ box: options?.box }),
     [options?.box]
@@ -88,9 +70,7 @@ export function useSharedResizeObserver<T extends HTMLElement | null>({
   }, [onUpdate]);
 
   useEffect(() => {
-    if (!observer) {
-      return;
-    }
+    createObserverContext();
 
     const entry: ObserverEntry<T> = {
       ref,
@@ -100,10 +80,10 @@ export function useSharedResizeObserver<T extends HTMLElement | null>({
       options: memoizedOptions,
     };
 
-    observer.observe(entry);
+    observerContext?.observe(entry);
 
     return () => {
-      observer.unobserve(entry);
+      observerContext?.unobserve(entry);
     };
-  }, [ref, observer, memoizedOptions]);
+  }, [ref, memoizedOptions]);
 }

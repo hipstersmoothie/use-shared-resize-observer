@@ -13,21 +13,6 @@ npm install use-shared-resize-observer
 
 ## Usage
 
-To use the hook, you need to wrap your application in a `SharedResizeObserverProvider`.
-
-```tsx
-import { SharedResizeObserverProvider } from "use-shared-resize-observer";
-import SizeAwareComponent from "./SizeAwareComponent";
-
-function App() {
-  return (
-    <SharedResizeObserverProvider>
-      <SizeAwareComponent />
-    </SharedResizeObserverProvider>
-  );
-}
-```
-
 Then in a component that needs to know the size of an element, you can use the `useSize` hook.
 
 ```tsx
@@ -98,14 +83,4 @@ useSharedResizeObserver({
   onUpdate,
   options: { box: "device-pixel-content-box" },
 });
-```
-
-### `SharedResizeObserverProvider`
-
-A component that provides a `ResizeObserver` instance to the `useSharedResizeObserver` hook.
-
-```tsx
-<SharedResizeObserverProvider>
-  <SizeAwareComponent />
-</SharedResizeObserverProvider>
 ```
