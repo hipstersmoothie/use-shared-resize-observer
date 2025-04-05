@@ -1,0 +1,70 @@
+{
+  "name": "use-shared-resize-observer",
+  "version": "1.0.0",
+  "main": "./dist/commonjs/use-shared-resize-observer.js",
+  "scripts": {
+    "build": "tshy",
+    "dev": "ladle serve",
+    "lint": "pnpx oxlint"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@radix-ui/react-context": "^1.1.1"
+  },
+  "devDependencies": {
+    "@ladle/react": "^5.0.2",
+    "@types/react": "^19.1.0",
+    "react": "^19.1.0",
+    "tshy": "^3.0.2"
+  },
+  "peerDependencies": {
+    "react": ">=17"
+  },
+  "tshy": {
+    "exports": {
+      ".": "./src/use-shared-resize-observer.tsx",
+      "./use-size": "./src/use-size.ts",
+      "./use-size-ref": "./src/use-size-ref.ts",
+      "./package.json": "./package.json"
+    }
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/use-shared-resize-observer.d.ts",
+        "default": "./dist/esm/use-shared-resize-observer.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/use-shared-resize-observer.d.ts",
+        "default": "./dist/commonjs/use-shared-resize-observer.js"
+      }
+    },
+    "./use-size": {
+      "import": {
+        "types": "./dist/esm/use-size.d.ts",
+        "default": "./dist/esm/use-size.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/use-size.d.ts",
+        "default": "./dist/commonjs/use-size.js"
+      }
+    },
+    "./use-size-ref": {
+      "import": {
+        "types": "./dist/esm/use-size-ref.d.ts",
+        "default": "./dist/esm/use-size-ref.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/use-size-ref.d.ts",
+        "default": "./dist/commonjs/use-size-ref.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "types": "./dist/commonjs/use-shared-resize-observer.d.ts",
+  "module": "./dist/esm/use-shared-resize-observer.js"
+}
