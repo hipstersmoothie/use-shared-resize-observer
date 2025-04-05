@@ -83,6 +83,9 @@ export function useSharedResizeObserver<T extends HTMLElement | null>({
     [options?.box]
   );
   const onUpdateRef = useRef(onUpdate);
+  useLayoutEffect(() => {
+    onUpdateRef.current = onUpdate;
+  }, [onUpdate]);
 
   useEffect(() => {
     if (!observer) {
