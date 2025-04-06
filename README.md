@@ -20,7 +20,7 @@ import { useSharedResizeObserver } from "use-shared-resize-observer";
 
 function SizeAwareComponent() {
   const ref = useRef<HTMLDivElement>(null);
-  const size = useSize(ref);
+  const size = useSharedResizeObserver(ref);
 
   return <div ref={ref}>{JSON.stringify(size)}</div>;
 }
