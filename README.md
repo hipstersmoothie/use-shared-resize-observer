@@ -16,7 +16,7 @@ npm install use-shared-resize-observer
 Then in a component that needs to know the size of an element, you can use the `useSize` hook.
 
 ```tsx
-import { useSharedResizeObserver } from "use-shared-resize-observer";
+import { useSize } from "use-shared-resize-observer";
 
 function SizeAwareComponent() {
   const ref = useRef<HTMLDivElement>(null);
