@@ -1,3 +1,17 @@
+# v0.2.1 (Fri Apr 11 2025)
+
+#### 🐛 Bug Fix
+
+- Conditional [#2](https://github.com/hipstersmoothie/use-shared-resize-observer/pull/2) ([@sfc-gh-alisowski](https://github.com/sfc-gh-alisowski))
+- doc: fix doc usage part. [#1](https://github.com/hipstersmoothie/use-shared-resize-observer/pull/1) ([@yyz945947732](https://github.com/yyz945947732))
+
+#### Authors: 2
+
+- Andrew Lisowski ([@sfc-gh-alisowski](https://github.com/sfc-gh-alisowski))
+- Khalil Yao ([@yyz945947732](https://github.com/yyz945947732))
+
+---
+
 # v0.1.1 (Sat Apr 05 2025)
 
 #### ⚠️ Pushed to `main`
