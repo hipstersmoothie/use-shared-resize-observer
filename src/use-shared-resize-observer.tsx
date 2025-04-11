@@ -7,7 +7,6 @@ interface SharedResizeObserverContext<T extends HTMLElement | null> {
 }
 
 const elementMap = new Map<Element, ObserverEntry<HTMLElement | null>>();
-const instances = new Set<ObserverEntry<HTMLElement | null>>();
 let observer: ResizeObserver | undefined;
 let observerContext:
   | SharedResizeObserverContext<HTMLElement | null>
@@ -20,7 +19,7 @@ function createObserverContext() {
 
   observer = new ResizeObserver((entries) => {
     for (const entry of entries) {
-      const instance = Array.from(instances).find(
+      const instance = Array.from(elementMap.values()).find(
         (i) => i.ref.current === entry.target
       );
 
@@ -52,7 +51,6 @@ function createObserverContext() {
       }
 
       observer?.observe(entry.ref.current);
-      instances.add(entry);
       elementMap.set(entry.ref.current, entry);
     },
     unobserve: (entry) => {
@@ -61,10 +59,9 @@ function createObserverContext() {
       }
 
       observer?.unobserve(entry.ref.current);
-      instances.delete(entry);
       elementMap.delete(entry.ref.current);
 
-      if (instances.size === 0) {
+      if (elementMap.size === 0) {
         observer?.disconnect();
         observer = undefined;
       }
