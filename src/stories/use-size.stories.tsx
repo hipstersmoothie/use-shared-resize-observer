@@ -79,3 +79,49 @@ export const ResizeObserver = () => {
     />
   );
 };
+
+export const ConditonalElement = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [variant, setVariant] = useState<"blue" | "red" | "green">("green");
+  const [toggle, setToggle] = useState(false);
+
+  useSharedResizeObserver({
+    ref,
+    onUpdate: (entry) => {
+      if (entry.contentRect.width > 400) {
+        setVariant("blue");
+      } else if (entry.contentRect.width < 100) {
+        setVariant("red");
+      } else {
+        setVariant("green");
+      }
+    },
+  });
+
+  const content = (
+    <div
+      ref={ref}
+      style={{
+        width: "150px",
+        height: "150px",
+        resize: "both",
+        overflow: "auto",
+        backgroundColor: variant,
+      }}
+    />
+  );
+
+  return (
+    <>
+      <button type="button" onClick={() => setToggle(!toggle)}>
+        Toggle
+      </button>
+
+      {toggle ? (
+        <div style={{ border: "1px solid red", padding: 8 }}>{content}</div>
+      ) : (
+        content
+      )}
+    </>
+  );
+};

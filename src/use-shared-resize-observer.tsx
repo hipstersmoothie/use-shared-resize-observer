@@ -1,12 +1,12 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef } from "react";
-import type { ObserverEntry, onUpdate } from "./types.js";
+import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import type { ObserverEntry } from "./types.js";
 
 interface SharedResizeObserverContext<T extends HTMLElement | null> {
   observe: (entry: ObserverEntry<T>) => void;
   unobserve: (entry: ObserverEntry<T>) => void;
 }
 
-const cbMap = new Map<React.RefObject<HTMLElement | null>, onUpdate>();
+const elementMap = new Map<Element, ObserverEntry<HTMLElement | null>>();
 let observer: ResizeObserver | undefined;
 let observerContext:
   | SharedResizeObserverContext<HTMLElement | null>
@@ -19,13 +19,27 @@ function createObserverContext() {
 
   observer = new ResizeObserver((entries) => {
     for (const entry of entries) {
-      const [, cb] =
-        Array.from(cbMap.entries()).find(
-          ([ref]) => ref.current === entry.target
-        ) || [];
+      const instance = Array.from(elementMap.values()).find(
+        (i) => i.ref.current === entry.target
+      );
 
-      if (cb) {
-        cb(entry);
+      if (instance) {
+        instance.onUpdate(entry);
+      }
+      // Else the instance is no longer in the DOM
+      else {
+        const instance = elementMap.get(entry.target);
+
+        // We found an entry for the detached element
+        if (instance?.ref.current) {
+          // Stop observing the detached element
+          observer?.unobserve(entry.target);
+          elementMap.delete(entry.target);
+
+          // Re-attach the instance with the new ref to the observer
+          observer?.observe(instance.ref.current);
+          elementMap.set(instance.ref.current, instance);
+        }
       }
     }
   });
@@ -37,7 +51,7 @@ function createObserverContext() {
       }
 
       observer?.observe(entry.ref.current);
-      cbMap.set(entry.ref, entry.onUpdate);
+      elementMap.set(entry.ref.current, entry);
     },
     unobserve: (entry) => {
       if (!entry.ref.current) {
@@ -45,9 +59,9 @@ function createObserverContext() {
       }
 
       observer?.unobserve(entry.ref.current);
-      cbMap.delete(entry.ref);
+      elementMap.delete(entry.ref.current);
 
-      if (cbMap.size === 0) {
+      if (elementMap.size === 0) {
         observer?.disconnect();
         observer = undefined;
       }
