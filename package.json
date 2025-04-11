@@ -2,6 +2,7 @@
   "name": "use-shared-resize-observer",
   "version": "0.2.0",
   "main": "./dist/commonjs/use-shared-resize-observer.js",
+  "repository": "hipstersmoothie/use-shared-resize-observer",
   "scripts": {
     "build": "tshy",
     "dev": "ladle serve",
@@ -9,7 +10,7 @@
     "release": "pnpm build && auto shipit"
   },
   "keywords": [],
-  "author": "",
+  "author": "Andrew Lisowski <lisowski54@gmail.com>",
   "license": "ISC",
   "description": "",
   "devDependencies": {
