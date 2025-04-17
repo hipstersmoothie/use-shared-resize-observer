@@ -1,6 +1,6 @@
-import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import useIsomorphicLayoutEffect from "use-isomorphic-layout-effect";
 import type { ObserverEntry } from "./types.js";
-
 interface SharedResizeObserverContext<T extends HTMLElement | null> {
   observe: (entry: ObserverEntry<T>) => void;
   unobserve: (entry: ObserverEntry<T>) => void;
@@ -79,7 +79,8 @@ export function useSharedResizeObserver<T extends HTMLElement | null>({
     [options?.box]
   );
   const onUpdateRef = useRef(onUpdate);
-  useLayoutEffect(() => {
+
+  useIsomorphicLayoutEffect(() => {
     onUpdateRef.current = onUpdate;
   }, [onUpdate]);
 
