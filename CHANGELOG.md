@@ -1,3 +1,15 @@
+# v0.2.2 (Thu Apr 17 2025)
+
+#### ⚠️ Pushed to `main`
+
+- iso layout effect ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+#### Authors: 1
+
+- Andrew Lisowski ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+---
+
 # v0.2.1 (Fri Apr 11 2025)
 
 #### 🐛 Bug Fix
