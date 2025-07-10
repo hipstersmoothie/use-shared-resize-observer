@@ -1,3 +1,15 @@
+# v0.2.3 (Thu Jul 10 2025)
+
+#### 🐛 Bug Fix
+
+- fix not recreating shared resize observer [#3](https://github.com/hipstersmoothie/use-shared-resize-observer/pull/3) ([@sfc-gh-alisowski](https://github.com/sfc-gh-alisowski))
+
+#### Authors: 1
+
+- Andrew Lisowski ([@sfc-gh-alisowski](https://github.com/sfc-gh-alisowski))
+
+---
+
 # v0.2.2 (Thu Apr 17 2025)
 
 #### ⚠️ Pushed to `main`
