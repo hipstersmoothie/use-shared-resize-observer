@@ -1,6 +1,6 @@
 {
   "name": "use-shared-resize-observer",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "main": "./dist/commonjs/use-shared-resize-observer.js",
   "repository": "hipstersmoothie/use-shared-resize-observer",
   "scripts": {
