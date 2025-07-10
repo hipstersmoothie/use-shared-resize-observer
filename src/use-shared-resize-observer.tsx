@@ -13,60 +13,60 @@ let observerContext:
   | undefined;
 
 function createObserverContext() {
-  if (observerContext) {
-    return;
-  }
+  if (!observer) {
+    observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const instance = Array.from(elementMap.values()).find(
+          (i) => i.ref.current === entry.target
+        );
 
-  observer = new ResizeObserver((entries) => {
-    for (const entry of entries) {
-      const instance = Array.from(elementMap.values()).find(
-        (i) => i.ref.current === entry.target
-      );
+        if (instance) {
+          instance.onUpdate(entry);
+        }
+        // Else the instance is no longer in the DOM
+        else {
+          const instance = elementMap.get(entry.target);
 
-      if (instance) {
-        instance.onUpdate(entry);
-      }
-      // Else the instance is no longer in the DOM
-      else {
-        const instance = elementMap.get(entry.target);
+          // We found an entry for the detached element
+          if (instance?.ref.current) {
+            // Stop observing the detached element
+            observer?.unobserve(entry.target);
+            elementMap.delete(entry.target);
 
-        // We found an entry for the detached element
-        if (instance?.ref.current) {
-          // Stop observing the detached element
-          observer?.unobserve(entry.target);
-          elementMap.delete(entry.target);
-
-          // Re-attach the instance with the new ref to the observer
-          observer?.observe(instance.ref.current);
-          elementMap.set(instance.ref.current, instance);
+            // Re-attach the instance with the new ref to the observer
+            observer?.observe(instance.ref.current);
+            elementMap.set(instance.ref.current, instance);
+          }
         }
       }
-    }
-  });
+    });
+  }
 
-  observerContext = {
-    observe: (entry) => {
-      if (!entry.ref.current) {
-        return;
-      }
+  if (!observerContext) {
+    observerContext = {
+      observe: (entry) => {
+        if (!entry.ref.current) {
+          return;
+        }
 
-      observer?.observe(entry.ref.current);
-      elementMap.set(entry.ref.current, entry);
-    },
-    unobserve: (entry) => {
-      if (!entry.ref.current) {
-        return;
-      }
+        observer?.observe(entry.ref.current);
+        elementMap.set(entry.ref.current, entry);
+      },
+      unobserve: (entry) => {
+        if (!entry.ref.current) {
+          return;
+        }
 
-      observer?.unobserve(entry.ref.current);
-      elementMap.delete(entry.ref.current);
+        observer?.unobserve(entry.ref.current);
+        elementMap.delete(entry.ref.current);
 
-      if (elementMap.size === 0) {
-        observer?.disconnect();
-        observer = undefined;
-      }
-    },
-  };
+        if (elementMap.size === 0) {
+          observer?.disconnect();
+          observer = undefined;
+        }
+      },
+    };
+  }
 }
 
 export function useSharedResizeObserver<T extends HTMLElement | null>({
