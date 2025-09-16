@@ -1,3 +1,15 @@
+# v0.2.4 (Tue Sep 16 2025)
+
+#### ⚠️ Pushed to `main`
+
+- Remove useless layout effect ([@sfc-gh-alisowski](https://github.com/sfc-gh-alisowski))
+
+#### Authors: 1
+
+- Andrew Lisowski ([@sfc-gh-alisowski](https://github.com/sfc-gh-alisowski))
+
+---
+
 # v0.2.3 (Thu Jul 10 2025)
 
 #### 🐛 Bug Fix
