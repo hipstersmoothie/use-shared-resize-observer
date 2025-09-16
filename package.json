@@ -70,8 +70,5 @@
     "./package.json": "./package.json"
   },
   "types": "./dist/commonjs/use-shared-resize-observer.d.ts",
-  "module": "./dist/esm/use-shared-resize-observer.js",
-  "dependencies": {
-    "use-isomorphic-layout-effect": "^1.2.0"
-  }
+  "module": "./dist/esm/use-shared-resize-observer.js"
 }
